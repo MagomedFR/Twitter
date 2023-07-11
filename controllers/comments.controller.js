@@ -1,5 +1,4 @@
-const { default: mongoose } = require("mongoose");
-const Comment = require("../models/Comment.model");
+const Comment = require("../models/Comment.mode");
 
 module.exports.commentsController = {
     addComments: async (req, res) => {

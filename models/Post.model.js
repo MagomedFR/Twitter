@@ -1,4 +1,3 @@
-const { text } = require("express");
 const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema({
@@ -6,16 +5,16 @@ const postSchema = mongoose.Schema({
     text: String,
 
     _userId: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
 
-    _likes: {
-        type: mongoose.SchemaTypes.ObjectId,
+    _likes: [{
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }
-})
+    }]
+});
 
-const Book = mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
-module.exports = Book;
+module.exports = Post;

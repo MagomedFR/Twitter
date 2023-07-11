@@ -1,10 +1,9 @@
-const { default: mongoose } = require("mongoose");
 const User = require("../models/User.model");
 
-module.exports.userController = mongoose.Schema = {
+module.exports.userController = {
     getUsers: async (req, res) => {
         try {
-            const users = await User.find()
+            const users = await User.find();
             res.json(users);
         } catch (error) {
             res.json(`${error.message}: Ошибка при выводе пользователя`);
@@ -19,38 +18,39 @@ module.exports.userController = mongoose.Schema = {
             res.json(`${error.message}: Ошибка при добавлении пользователя`);
         }
     },
-
-    getUserId: (req, res) => {
+    getUserId: async (req, res) => {
         try{
-            User.findById(req.params.id).then((data) => {
-                res.json(data)
-            })
+            const user = await User.findById(req.params.id);
+            res.json(user);
         }catch (error) {
-            res.json(`${error.message}: Ошибка при добавлении пользователя`);
+            res.json(`${error.message}: Ошибка при получении пользователя`);
         }
     },
-
     patchUser: async (req, res) => {
         const { name } = req.body;
         try {
-            await User.findByAndUpdate(req.params.id, {
+            await User.findByIdAndUpdate(req.params.id, {
                 $set: { name },
             });
+            res.json("Пользователь изменен");
         } catch (error) {
-            res.json(`${error.message}: Ошибка при изменения пользователя`);
+            res.json(`${error.message}: Ошибка при изменении пользователя`);
         }
     },
     deleteUser: async (req, res) => {
         try {
-            await User.findByIdAndRemove(req.params.id)
-            res.json('пользователь удален')
+            await User.findByIdAndRemove(req.params.id);
+            res.json('Пользователь удален');
         } catch (error) {
-            res.json(`${error.message}: Ошибка при удаления пользователя`);
+            res.json(`${error.message}: Ошибка при удалении пользователя`);
         }
     },
     patchSaves: async (req, res) => {
-        const data = await User.findByIdAndUpdate(req.params.id, {$push: {saved: req.body.saved}}).then((data) => {
-            res.json(data)
-        })
+        try {
+            const user = await User.findByIdAndUpdate(req.params.id, {$push: {saved: req.body.saved}});
+            res.json(user);
+        } catch (error) {
+            res.json({message: `Ошибка при добавлении сохраненного: ${error.message}`});
+        }
     }
 }

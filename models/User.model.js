@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-    name: String,
-    saved: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "Post",
-        },
-    ],
+  name: String,
+  saved: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
 });
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
